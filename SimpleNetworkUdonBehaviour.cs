@@ -133,13 +133,13 @@ namespace tutinoco
 
             string[] data = c.Substring(8).Split('･');
             foreach( string cmd in data ) {
-                VRCPlayerApi player = VRCPlayerApi.GetPlayerById(int.Parse(cmd.Substring(0,2)));
+                VRCPlayerApi player = int.TryParse(cmd.Substring(0, 2), out int num) ? VRCPlayerApi.GetPlayerById(int.Parse(cmd.Substring(0, 2))) : null;
                 int find = cmd.IndexOf(":");
-                string name = cmd.Substring(2,find-2);
-                if( name == "__init__" ) return;
-                string value = cmd.Substring(find+1);
+                string name = cmd.Substring(2, find - 2);
+                if (name == "__init__") return;
+                string value = cmd.Substring(find + 1);
                 ReceiveEvent(name, value);
-                ReceiveEvent(name, value, player);
+                if (player != null) ReceiveEvent(name, value, player);
             }
         }
 
